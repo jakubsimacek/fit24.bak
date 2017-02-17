@@ -1,0 +1,454 @@
+var express = require('express');
+var router = express.Router();
+var clone = require('clone');
+
+var data = {
+    "_id" : "02-01-2017",
+    "state" : "open",
+    "startDate" : "02/01/2017",
+    "endDate"   : "08/01/2017",
+    "description" : "Rozvrh cvičení 1.1.2017 do 7.1.2017",
+    "tableWidth" : 1005,
+    "config" : {
+	"maxPeople" : 7,
+	"firstGap"  : 15,
+	"intermGap" : 47,
+	"endGap"    : 20
+    },
+    "ruler" : [
+	{
+	    "time" : "7:00",
+	    "left" : 180,
+	    "gap" : false    
+	},
+	{
+	    "time" : "8:00",
+	    "left" : 360,
+	    "gap" : true    
+	},
+	{
+	    "time" : "16:00",
+	    "left" : 407,
+	    "gap" : true    
+	},
+	{
+	    "time" : "17:00",
+	    "left" : 587,
+	    "gap" : false    
+	},
+	{
+	    "time" : "18:00",
+	    "left" : 767,
+	    "gap" : false    
+	},
+	{
+	    "time" : "19:00",
+	    "left" : 947,
+	    "gap" : false    
+	}
+    ],
+    "intervals" : [
+	{
+	    "from" : "6:20",
+	    "to"   : "8:00"
+	},
+	{
+	    "from" : "16:00",
+	    "to"   : "19:00"
+	}
+    ],
+    "days" : [ 
+        {
+            "day" : "pondělí",
+	    "terms" : [
+		{
+                    "id"    : "po-16-45",
+		    "start" : "16:45",
+		    "timestamp" : "2017-01-02T16:45:00",
+		    "line1" : "Metabolické cvičeni I.",
+		    "line2" : "",
+		    "coach" : "Ivana",
+		    "capacity" : 7,
+		    "state" : "booked",
+		    "nums"  : "",
+		    "left" : 540,
+		    "top" : 31,
+		    "booked" : [
+			{
+			    "user_id" : "jakubsimacek",
+			    "user_name" : "Jakub Šimáček",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "tomashavel",
+			    "user_name" : "Tomáš Havel",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "mariemejdrova",
+			    "user_name" : "Marie Mejdrová",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "martinamala",
+			    "user_name" : "Martina Malá",
+			    "count" : 1
+			}
+		    ]
+		},
+		{
+                    "id"    : "po-18-00",
+		    "start" : "18:00",
+		    "timestamp" : "2017-01-02T18:00:00",
+		    "line1" : "Posilování nohou, břicha,",
+		    "line2" : "zádových svalů",
+		    "coach" : "Aleš",
+		    "capacity" : 7,
+		    "state" : "saturated",
+		    "nums"  : "",
+		    "left" : 765,
+		    "top" : 31,
+		    "booked" : [
+			{
+			    "user_id" : "tomashavel",
+			    "user_name" : "Tomáš Havel",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "mariemejdrova",
+			    "user_name" : "Marie Mejdrová",
+			    "count" : 5
+			},
+			{
+			    "user_id" : "martinamala",
+			    "user_name" : "Martina Malá",
+			    "count" : 1
+			}
+		    ],
+		    "reserved" : [
+			{
+			    "user_id" : "martinamala",
+			    "user_name" : "Martina Malá",
+			    "count" : 3
+			}
+		    ]
+		}
+	    ],
+        }, 
+        {
+            "day" : "úterý",
+	    "terms" : [
+		{
+                    "id"    : "ut-18-00",
+		    "start" : "18:00",
+		    "timestamp" : "2017-01-03T18:00:00",
+		    "line1" : "Metabolické cvičeni I./II.",
+		    "line2" : "",
+		    "coach" : "Veronika",
+		    "capacity" : 7,
+		    "state" : "saturated",
+		    "nums"  : "",
+		    "left" : 765,
+		    "top" : 111,
+		    "booked" : [
+			{
+			    "user_id" : "tomashavel",
+			    "user_name" : "Tomáš Havel",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "mariemejdrova",
+			    "user_name" : "Marie Mejdrová",
+			    "count" : 2
+			},
+			{
+			    "user_id" : "martinamala",
+			    "user_name" : "Martina Malá",
+			    "count" : 4
+			}
+		    ],
+		    "reserved" : [
+			{
+			    "user_id" : "michalburdik",
+			    "user_name" : "Michal Burdík",
+			    "count" : 1
+			}
+		    ]
+		}
+	    ],
+        }, 
+        {
+            "day" : "středa",
+	    "terms" : [
+		{
+                    "id"    : "st-06-20",
+		    "start" : "6:20",
+		    "timestamp" : "2017-01-04T06:20:00",
+		    "line1" : "Posilování celého těla",
+		    "line2" : "",
+		    "coach" : "Ivana",
+		    "capacity" : 7,
+		    "state" : "booked",
+		    "nums"  : "2/2",
+		    "left" : 129,
+		    "top" : 191,
+		    "booked" : [
+			{
+			    "user_id" : "jakubsimacek",
+			    "user_name" : "Jakub Šimáček",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "tomashavel",
+			    "user_name" : "Tomáš Havel",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "mariemejdrova",
+			    "user_name" : "Marie Mejdrová",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "martinamala",
+			    "user_name" : "Martina Malá",
+			    "count" : 1
+			}
+		    ]
+		},
+		{
+                    "id"    : "st-17-30",
+		    "start" : "17:30",
+		    "timestamp" : "2017-01-04T17:30:00",
+		    "line1" : "Posilování horní",
+		    "line2" : "poloviny těla",
+		    "coach" : "Aleš",
+		    "capacity" : 7,
+		    "state" : "available",
+		    "nums"  : "1",
+		    "left" : 675,
+		    "top" : 191,
+		    "booked" : [
+			{
+			    "user_id" : "alespetera",
+			    "user_name" : "Aleš Petera",
+			    "count" : 3
+			},
+			{
+			    "user_id" : "tomashavel",
+			    "user_name" : "Tomáš Havel",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "mariemejdrova",
+			    "user_name" : "Marie Mejdrová",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "martinamala",
+			    "user_name" : "Martina Malá",
+			    "count" : 1
+			}
+		    ]
+		}
+	    ],
+        }, 
+        {
+            "day" : "čtvrtek",
+	    "terms" : [
+		{
+                    "id"    : "ct-17-30",
+		    "start" : "17:30",
+		    "timestamp" : "2017-01-05T17:30:00",
+		    "line1" : "Metabolické cvičeni I./II.",
+		    "line2" : "",
+		    "coach" : "Aleš",
+		    "capacity" : 7,
+		    "state" : "reserved",
+		    "nums"  : "1",
+		    "left" : 675,
+		    "top" : 271,
+		    "booked" : [
+			{
+			    "user_id" : "tomashavel",
+			    "user_name" : "Tomáš Havel",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "mariemejdrova",
+			    "user_name" : "Marie Mejdrová",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "martinamala",
+			    "user_name" : "Martina Malá",
+			    "count" : 1
+			}
+		    ],
+		    "reserved" : [
+			{
+			    "user_id" : "jakubsimacek",
+			    "user_name" : "Jakub Šimáček",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "michalburdik",
+			    "user_name" : "Michal Burdík",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "jakubsimacek",
+			    "user_name" : "Jakub Šimáček",
+			    "count" : 1
+			}
+		    ]
+		}
+	    ],
+        }, 
+        {
+            "day" : "pátek",
+	    "terms" : [
+		{
+                    "id"    : "pa-18-00",
+		    "start" : "18:00",
+		    "timestamp" : "2017-01-06T18:00:00",
+		    "line1" : "Posilování celého těla",
+		    "line2" : "",
+		    "coach" : "Ivana",
+		    "capacity" : 7,
+		    "state" : "available",
+		    "nums"  : "4",
+		    "left" : 765,
+		    "top" : 351,
+		    "booked" : [
+			{
+			    "user_id" : "tomashavel",
+			    "user_name" : "Tomáš Havel",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "mariemejdrova",
+			    "user_name" : "Marie Mejdrová",
+			    "count" : 1
+			},
+			{
+			    "user_id" : "martinamala",
+			    "user_name" : "Martina Malá",
+			    "count" : 1
+			}
+		    ]
+		}
+	    ],
+        }
+    ]
+};
+
+testParams = {
+    "currentDate" : "2017-01-03T07:00:00",
+    "userId" : "jakubsimacek",
+    "isAdmin" : false
+}
+var currentDate = function() {
+    return new Date(testParams.currentDate);
+}
+
+var checkIfPassed = function(date) {
+    return (currntDate() > new Date(date));
+}
+
+var enrichDocument = function(doc, userId) {
+    var curDoc = clone(doc, false);
+    var i, j, k;
+    var daysLen, termsLen, listLen;
+    var curDay, curTerm, curListItem;
+    var numReserved = 0, numBooked = 0;
+    var youReserved = 0, youBooked = 0;
+    
+    for(i = 0, daysLen = curDoc.days.length; i < daysLen; i++) {
+	curDay = curDoc.days[i];
+	for(j = 0, termsLen = curDay.terms; j < termsLen; j++) {
+	    curTerm = curDay.terms[j];
+	    for(k = 0, listLen = curTerm.booked.length; k < listLen; k++) {
+		curListItem = curDay.booked[k];
+		numBooked += curListItem.count;
+		if (curListItem.userId = userId) {
+		    youBooked += curListItem.count;
+		}
+	    }
+	    for(k = 0, listLen = curTerm.reserved.length; k < listLen; k++) {
+		curListItem = curDay.reserved[k];
+		numBooked += curListItem.count;
+		if (curListItem.userId = userId) {
+		    youBooked += curListItem.count;
+		}
+	    }
+	    curTerm.viewData = {
+		"state" : (checkIfPassed(curTerm.timestamp)) ? "passed" : curTerm.status,
+		"available" : ((curTerm.capacity - numBooked) < 0) ? 0 : curTerm.capacity - numBooked,
+		"numBooked" : numBooked,
+		"numReserved" : numReserved,
+		"youBooked" : youBooked,
+		"youReserved" : youReserved
+	    }
+	}
+    }
+    return curDoc;
+}
+
+/* GET home page - current term view */
+router.get('/', function(req, res, next) {
+    res.render('index', {
+	title: 'Fit 24',
+	data: enrichDocument(data, testParams.userId),
+	session : {
+	    isAdmin: testParams.isAdmin,
+	    userId: testParams.userId
+	}
+    });
+});
+
+// GET term edit
+router.get('/cviceni/:week/:term', function(req, res, next) {
+    var termId = req.params.term;
+    var i, j, lenD, lenT, termsOfDay;
+    var curDay, curTerm, foundTerm;
+    loop1:
+    for(i = 0, lenD = data.days.length; i < lenD; i++) {
+        termsOfDay = data.days[i];
+        console.log("... i tu " + i);
+        for(j = 0, lenT = termsOfDay.terms.length; j < lenT; j++) {
+            console.log(i);
+            curTerm = termsOfDay.terms[j];
+            if (curTerm.id == termId) {
+                foundTerm = curTerm;
+                curDay = termsOfDay.day;
+                break loop1;
+            }
+        }
+    }
+
+    res.render('index', {
+	title: 'Fit 24',
+	data: enrichDocument(data, testParams.userId),
+	curTerm: curTerm,
+	curDay : curDay,
+	session : {
+	    isAdmin: testParams.isAdmin,
+	    userId: testParams.userId
+	}
+    });
+});
+
+// GET params
+router.get('/params', function(req, res, next) {
+    res.render('params', { title: 'Fit 24', testParams: testParams, data : JSON.stringify(data, null, 2) });
+});
+
+router.post('/params', function(req, res) {
+    testParams.currentDate = req.body.currentDate;
+    testParams.userId = req.body.userId;
+    testParams.isAdmin = (req.body.isAdmin == 'on') ? true : false;
+    console.log(testParams.isAdmin);
+    res.redirect(req.path);
+});
+
+module.exports = router;
